@@ -1,12 +1,12 @@
 import githubRequest from './githubRequest';
 
-const getRepositories = (organization, numberOfRepos = 5) => {
+const getRepositories = (organization, numberOfRepos) => {
     const query = `
-      {
-        organization(login: ${organization}) {
+      query ($organization: String!, $numberOfRepos: Int = 5) {
+        organization(login: $organization) {
           login
           url
-          repositories(first: ${numberOfRepos}) {
+          repositories(first: $numberOfRepos) {
             nodes {
               name
               url
@@ -17,33 +17,40 @@ const getRepositories = (organization, numberOfRepos = 5) => {
         }
       }
     `
-    return githubRequest(JSON.stringify({"query": query}))
+    let requestBody = {query: query}
+    requestBody.variables = {organization: organization}
+    if(numberOfRepos > 0) requestBody.variables.numberOfRepos = numberOfRepos
+    return githubRequest(JSON.stringify(requestBody))
 }
 
 const addStar = (repoId) => {
   const mutation = `
-    mutation {
-      addStar(input: { starrableId: "${repoId}" }) {
+      mutation AddStar($repoId: ID!) {
+        addStar(input: {starrableId: $repoId}) {
         starrable {
+          id
           viewerHasStarred
         }
       }
     }
   `
-  return githubRequest(JSON.stringify({"query": mutation}))
+  let requestBody = {query: mutation, variables: {repoId}}
+  return githubRequest(JSON.stringify(requestBody))
 }
 
 const removeStar = (repoId) => {
   const mutation = `
-    mutation {
-      removeStar(input: { starrableId: "${repoId}" }) {
-        starrable {
-          viewerHasStarred
-        }
+    mutation removeStar($repoId: ID!) {
+      removeStar(input: {starrableId: $repoId}) {
+      starrable {
+        id
+        viewerHasStarred
       }
     }
+  }
   `
-  return githubRequest(JSON.stringify({"query": mutation}))
+  let requestBody = {query: mutation, variables: {repoId}}
+  return githubRequest(JSON.stringify(requestBody))
 }
 
 export {

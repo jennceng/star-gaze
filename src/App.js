@@ -10,7 +10,7 @@ function App() {
 
   async function onSubmit(event) {
     event.preventDefault()
-    const { data } = await getRepositories(nameState, numReposState)
+    const { data } = await getRepositories(nameState, parseInt(numReposState))
     setOrganizationState(data.organization)
     updateName('')
     updateNumRepos('')

@@ -6,7 +6,6 @@ export default function RepoTile ({url, name, id, viewerHasStarred }) {
 
   async function starRepo() {
     const { data } = await addStar(id)
-    console.log(data)
     updateStarred(data.addStar.starrable.viewerHasStarred)
   }
 
