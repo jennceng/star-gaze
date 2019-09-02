@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import { ApolloProvider } from '@apollo/react-hooks';
+
 import ApolloClient from 'apollo-boost';
 import { gql } from "apollo-boost";
 
@@ -17,21 +19,10 @@ export const client = new ApolloClient({
   },
 });
 
-client
-  .query({
-    query: gql`
-    {
-      viewer {
-        name
-        url
-      }
-    }
-    `
-  })
-  .then(result => console.log(result.data));
-
 ReactDOM.render(
+  <ApolloProvider client={client}>
     <App />
+  </ApolloProvider>
 , document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
