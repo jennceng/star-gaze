@@ -1,24 +1,11 @@
-import React, { useState } from 'react';
-import { addStar, removeStar } from './queries';
+import React from 'react';
 
 export default function RepoTile ({url, name, id, viewerHasStarred }) {
-  const [starred, updateStarred] = useState(viewerHasStarred)
-
-  async function starRepo() {
-    const { data } = await addStar(id)
-    updateStarred(data.addStar.starrable.viewerHasStarred)
-  }
-
-  async function unstarRepo() {
-    const { data } = await removeStar(id)
-    updateStarred(data.removeStar.starrable.viewerHasStarred)
-  }
-
   return(
     <div>
       <a href={url}>{name}</a>
-      {starred ?
-      (<button onClick={unstarRepo}>Unstar <span role="img" aria-label="empty star">⭐</span></button>) : (<button onClick={starRepo}> Star <span role="img" aria-label="empty star">☆</span></button>)}
+      {viewerHasStarred ?
+      (<button> <span role="img" aria-label="empty star">⭐</span></button>) : (<button> <span role="img" aria-label="empty star">☆</span></button>)}
     </div>
   )
 }

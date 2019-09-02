@@ -8,7 +8,6 @@ const githubRequest = (body) => {
     headers: headers
   })
   .then(res => {return res.json()})
-  // .catch(res => console.log(res))
 }
 
 export default githubRequest;
